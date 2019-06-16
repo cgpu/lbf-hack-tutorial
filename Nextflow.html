@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Session 1: Nextflow</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="Nextflow.html">Nextflow</a>
+</li>
+<li>
+  <a href="Docker.html">Docker</a>
+</li>
+<li>
+  <a href="Flowcraft.html">Flowcraft</a>
+</li>
+<li>
+  <a href="Deploit.html">Deploit</a>
+</li>
+<li>
+  <a href="Credits.html">Credits</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Session 1: Nextflow</h1>
+
+</div>
+
+
+<p><img src="https://raw.githubusercontent.com/PhilPalmer/lbf-hack-tutorial/master/images/nextflow.png" /></p>
+<p><br><br></p>
+<div id="overview" class="section level1">
+<h1>Overview</h1>
+<p><br></p>
+<p>What is Nextflow? Why use it? <a href="">See about Nextflow slides</a></p>
+<p><br></p>
+<p><strong>Main outcome:</strong> <em>During the first session you will build a <a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a> &amp; <a href="https://multiqc.info/">MultiQC</a> pipeline to learn the basics of Nextflow including:</em> - <a href="https://www.nextflow.io/docs/latest/getstarted.html?highlight=parameters#pipeline-parameters">Parameters</a> - <a href="https://www.nextflow.io/docs/latest/process.html">Processes</a> (inputs, outputs &amp; scripts) - <a href="https://www.nextflow.io/docs/latest/channel.html">Channels</a> - <a href="https://www.nextflow.io/docs/latest/operator.html">Operators</a> - <a href="https://www.nextflow.io/docs/latest/config.html">Configuration</a></p>
+</div>
+<div id="a-installation" class="section level1">
+<h1>a) Installation</h1>
+<div id="i.-installing-nextflow" class="section level2">
+<h2>i. Installing Nextflow</h2>
+<p>You will need to have Java 8 or later installed for Nextflow to work. You can check your version of Java by entering the following command:</p>
+<pre><code>java -version</code></pre>
+<p>If you have <a href="https://docs.conda.io/en/latest/">Conda</a> installed then you can run the following to install Nextflow:</p>
+<pre><code>conda install -c bioconda nextflow</code></pre>
+<p>To install Nextflow open a terminal &amp; enter the following command:</p>
+<pre><code>curl -fsSL get.nextflow.io | bash</code></pre>
+<p>This will create a <code>nextflow</code> executable file in your current directory. To complete the installation so that you can run Nextflow run anywhere you may want to add it a directory in your $PATH, eg:</p>
+<pre><code>mv nextflow /usr/local/bin</code></pre>
+<p>You can then test your installation of Nextflow with:</p>
+<pre><code>nextflow run hello</code></pre>
+</div>
+<div id="ii.-installing-docker" class="section level2">
+<h2>ii. Installing Docker</h2>
+<p>To check if you have Docker installed you can type:</p>
+<pre><code>docker -v</code></pre>
+<p>If you need to install docker you can do so by following the instructions <a href="https://docs.docker.com/v17.12/install/">here</a>. Be sure to select your correct OS: <a href="https://docs.docker.com/v17.12/install/"><img src="https://raw.githubusercontent.com/PhilPalmer/lbf-hack-tutorial/master/images/install_docker.png" alt="install_docker" /></a></p>
+</div>
+</div>
+<div id="b-parameters" class="section level1">
+<h1>b) Parameters</h1>
+<p>Now that we have Nextflow &amp; Docker installed we’re ready to run our first script</p>
+<ol style="list-style-type: decimal">
+<li>Create a file <code>main.nf</code> &amp; open this in your favourite code/text editor eg VSCode or vim</li>
+<li>In this file write the following:</li>
+</ol>
+<pre><code>// main.nf
+params.reads = false
+
+println &quot;My reads: ${params.reads}&quot;</code></pre>
+<p>The first line initialises a new variable (<code>params.reads</code>) &amp; sets it to <code>false</code> The second line prints the value of this variable on execution of the pipeline.</p>
+<p>We can now run this script &amp; set the value of <code>params.reads</code> to one of our FASTQ files in the testdata folder with the following command:</p>
+<pre><code>nextflow run main.nf --reads testdata/test.20k_reads_1.fastq.gz</code></pre>
+<p>This should return the value you passed on the command line</p>
+<div id="recap" class="section level4">
+<h4>Recap</h4>
+<p>Here we learnt how to define parameters &amp; pass command line arguments to them in Nextflow</p>
+</div>
+</div>
+<div id="c-processes-inputs-outputs-scripts" class="section level1">
+<h1>c) Processes (inputs, outputs &amp; scripts)</h1>
+<p>Nextflow allows the execution of any command or user script by using a <code>process</code> definition.</p>
+<p>A process is defined by providing three main declarations: the process <a href="https://www.nextflow.io/docs/latest/process.html#inputs">inputs</a>, the process <a href="https://www.nextflow.io/docs/latest/process.html#outputs">outputs</a> and finally the command <a href="https://www.nextflow.io/docs/latest/process.html#script">script</a>.</p>
+<p>In our main script we want to add the following:</p>
+<pre class="nextflow"><code>//mainf.nf
+reads = file(params.reads)
+
+process fastqc {
+
+    publishDir &quot;results&quot;, mode: &#39;copy&#39;
+
+    input:
+    file(reads) from reads
+
+    output:
+    file &quot;*_fastqc.{zip,html}&quot; into fastqc_results
+
+    script:
+    &quot;&quot;&quot;
+    fastqc $reads
+    &quot;&quot;&quot;
+}</code></pre>
+<p>Here we created the variable <code>reads</code> which is a <code>file</code> from the command line input.</p>
+<p>We can then create the process <code>fastqc</code> including: - the <a href="https://www.nextflow.io/docs/latest/process.html#directives">directive</a> <code>publishDir</code> to specify which folder to copy the output files to - the <a href="https://www.nextflow.io/docs/latest/process.html#inputs">inputs</a> where we declare a <code>file</code> <code>reads</code> from our variable <code>reads</code> - the <a href="https://www.nextflow.io/docs/latest/process.html#outputs">output</a> which is anything ending in <code>_fastqc.zip</code> or <code>_fastqc.html</code> which will go into a <code>fastqc_results</code> channel - the <a href="https://www.nextflow.io/docs/latest/process.html#script">script</a> where we are running the <code>fastqc</code> command on our <code>reads</code> variable</p>
+<p>We can then run our script with the following command:</p>
+<pre><code>nextflow run main.nf --reads testdata/test.20k_reads_1.fastq.gz -with-docker flowcraft/fastqc:0.11.7-1</code></pre>
+<p>By running Nextflow using the <code>with-docker</code> flag we can specify a Docker container to execute this command in. This is beneficial because it means we do not need to have <code>fastqc</code> installed locally on our laptop. We just need to specify a Docker container that has <code>fastqc</code> installed.</p>
+</div>
+<div id="d-channels" class="section level1">
+<h1>d) Channels</h1>
+<p>Channels are the preferred method of transferring data in Nextflow &amp; can connect two processes or operators.</p>
+<!--
+There are two types of channels:
+1. [Queue channels](https://www.nextflow.io/docs/latest/channel.html#queue-channel) can be used to connect two processes or operators. They are usually produced from factory methods such as [`from`](https://www.nextflow.io/docs/latest/channel.html#from)/[`fromPath`](https://www.nextflow.io/docs/latest/channel.html#frompath) or by chaining it with methods such as [`map`](https://www.nextflow.io/docs/latest/operator.html#operator-map). **Queue channels are consumed upon being read.**
+2. [Value channels](https://www.nextflow.io/docs/latest/channel.html#value-channel) a.k.a. singleton channel are bound to a single value and can be read unlimited times without consuming there content. Value channels are produced by the value factory method or by operators returning a single value, such us first, last, collect, count, min, max, reduce, sum.
+-->
+<p>Here we will use the method <a href="https://www.nextflow.io/docs/latest/channel.html#fromfilepairs"><code>fromFilePairs</code></a> to create a channel to load paired-end FASTQ data, rather than just a single FASTQ file.</p>
+<p>To do this we will replace the code from <a href="https://github.com/PhilPalmer/lbf-hack-tutorial/blob/master/README.md#c-processes-inputs-outputs--scripts">1c</a> with the following</p>
+<pre><code>//main.nf
+reads = Channel.fromFilePairs(params.reads, size: 2)
+
+process fastqc {
+
+    tag &quot;$name&quot;
+    publishDir &quot;results&quot;, mode: &#39;copy&#39;
+    container &#39;flowcraft/fastqc:0.11.7-1&#39;
+
+    input:
+    set val(name), file(reads) from reads
+
+    output:
+    file &quot;*_fastqc.{zip,html}&quot; into fastqc_results
+
+    script:
+    &quot;&quot;&quot;
+    fastqc $reads
+    &quot;&quot;&quot;
+}</code></pre>
+<p>The <code>reads</code> variable is now equal to a channel which contains the reads prefix &amp; paired-end FASTQ data. Therefore, the input declaration has also changed to reflect this by declaring the value <code>name</code>. This <code>name</code> can be used as a tag for when the pipeline is run. Also as we are now declaring two inputs the <code>set</code> keyword also has to be used. Finally, we can also specify the container name within the processes as a directive.</p>
+<p>To run the pipeline:</p>
+<pre><code>nextflow run main.nf --reads &quot;testdata/test.20k_reads_{1,2}.fastq.gz&quot; -with-docker flowcraft/fastqc:0.11.7-1</code></pre>
+<div id="recap-1" class="section level4">
+<h4>Recap</h4>
+<p>Here we learnt how to the <a href="https://www.nextflow.io/docs/latest/channel.html#fromfilepairs"><code>fromFilePairs</code></a> method to generate a channel for our input data.</p>
+</div>
+</div>
+<div id="e-operators" class="section level1">
+<h1>e) Operators</h1>
+<p>Operators are methods that allow you to manipulate &amp; connect channels.</p>
+<p>Here we will add a new process <code>multiqc</code> &amp; use the <a href="https://www.nextflow.io/docs/latest/operator.html#collect"><code>.collect()</code></a> operator</p>
+<p>Add the following process after <code>fastqc</code>:</p>
+<pre><code>//main.nf
+process multiqc {
+
+    publishDir &quot;results&quot;, mode: &#39;copy&#39;
+    container &#39;ewels/multiqc:v1.7&#39;
+
+    input:
+    file (fastqc:&#39;fastqc/*&#39;) from fastqc_results.collect()
+
+    output:
+    file &quot;*multiqc_report.html&quot; into multiqc_report
+    file &quot;*_data&quot;
+
+    script:
+    &quot;&quot;&quot;
+    multiqc . -m fastqc
+    &quot;&quot;&quot;
+}</code></pre>
+<p>Here we have added another process <code>multiqc</code>. We have used the <code>collect</code> operator here so that if <code>fastqc</code> ran for more than two pairs of files <code>multiqc</code> would collect all of the files &amp; run only once.</p>
+<p>The pipeline can be run with the following:</p>
+<pre><code>nextflow run main.nf --reads &quot;testdata/test.20k_reads_{1,2}.fastq.gz&quot; -with-docker flowcraft/fastqc:0.11.7-1</code></pre>
+<div id="recap-2" class="section level2">
+<h2>Recap</h2>
+<p>Here we learnt how to use operators such as <code>collect</code> &amp; connect processes via channels</p>
+</div>
+</div>
+<div id="f-configuration" class="section level1">
+<h1>f) Configuration</h1>
+<p>Configuration, such as parameters, containers &amp; resources eg memory can be set in <code>config</code> files such as <a href="https://www.nextflow.io/docs/latest/config.html#configuration-file"><code>nextflow.config</code></a>.</p>
+<p>For example our <code>nextflow.config</code> file might look like this:</p>
+<pre><code>docker.enabled = true
+params.reads = false
+
+process {
+  cpus = 2
+  memory = &quot;2.GB&quot;
+
+  withName: fastqc {
+    container = &quot;flowcraft/fastqc:0.11.7-1&quot;
+  }
+  withName: multiqc {
+    container = &quot;ewels/multiqc:v1.7&quot;
+  }
+}</code></pre>
+<p>Here we have enabled docker by default, initialised parameters, set resources &amp; containers. It is best practice to keep these in the <code>config</code> file so that they can more easily be set or removed. Containers &amp; <code>params.reads</code> can then be removed from <code>main.nf</code>.</p>
+<div id="recap-3" class="section level2">
+<h2>Recap</h2>
+<p>Here we learnt how to use configuration files to set parameters, resources &amp; containers</p>
+</div>
+</div>
+<div id="next-up-session-2-docker" class="section level1">
+<h1>Next up: <a href="Docker.html">Session 2: Docker</a></h1>
+<p><br /></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

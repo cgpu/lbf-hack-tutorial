@@ -1,0 +1,113 @@
+---
+title: "Session 4: Running Nextflow Pipelines on The Cloud on Deploit"
+output: 
+  html_document:
+    toc: true
+    toc_float: true  
+    code_folding: show
+    code_download: false
+    theme: cerulean  
+    highlight: kate         
+---
+
+
+<br>
+
+<img src="https://raw.githubusercontent.com/PhilPalmer/lbf-hack-tutorial/master/images/deploit.png" alt="drawing" width="400"/>
+
+<br>
+
+
+**Main outcome:** *During this session, you will learn how to scale the GATK pipeline you built in the previous session to run an analysis on the Cloud using the Deploit platform.*
+
+[Deploit](https://lifebit.ai/deploit) is a bioinformatics platform, developed by Lifebit, where you can run your analysis over the Cloud/AWS.
+
+# a) Creating an account
+First, create an account/log in [here](https://deploit.lifebit.ai/register). You will get $10 free credits. If you prefer you can connect & use your own AWS account/credentials.
+
+![create_deploit_account](https://raw.githubusercontent.com/PhilPalmer/lbf-hack-tutorial/master/images/create_deploit_account.png)
+
+# b) Importing a Nextflow pipeline on Deploit
+
+We are able to import the GATK pipeline we created with FlowCraft from the previous section (Session 3) on Deploit. This will enable us to scale our analyses. All we need to import a pipeline is the URL from GitHub. For simplicity, we have already created a GitHub repository for the pipeline here: https://github.com/lifebit-ai/gatk-flowcraft
+
+To import the pipeline we must first navigate to the pipelines page. This can be found in the navigation bar on the left-hand-side:
+
+![deploit_pipelines](https://raw.githubusercontent.com/PhilPalmer/lbf-hack-tutorial/master/images/deploit_pipelines.png)
+
+To then import the pipeline you need to:
+  - Click the green `New` button
+  - `Select` the GitHub icon to import the Nextflow pipeline from GitHub
+  - Paste the URL of our pipeline [`https://github.com/lifebit-ai/gatk-flowcraft`](https://github.com/lifebit-ai/gatk-flowcraft)
+  - Name our pipeline, eg `gatk-flowcraft`
+  - (Optional:) enter a pipeline description
+  - Click `Next` & `Create pipeline` :tada:
+
+![import_pipeline.gif](https://raw.githubusercontent.com/PhilPalmer/lbf-hack-tutorial/master/images/import_pipeline.gif)
+
+
+# c) Running the pipeline
+
+Pipelines can be run in three simple steps:
+1. Select the pipeline
+2. Select data & parameters
+3. Run the analysis
+
+## i. Selecting the pipeline
+Once the pipeline is imported it will automatically be selected.
+
+Alternatively, you can navigate to the pipelines page. Where you can find the imported pipeline under `MY PIPELINES & TOOLS`. To select the pipeline you need to click the card for the pipeline.
+
+![my_pipelines](https://raw.githubusercontent.com/PhilPalmer/lbf-hack-tutorial/master/images/my_pipelines.png)
+
+## ii. Selecting the data & parameters
+
+The pipeline requires three parameters to be set. These are:
+- `fastq` - paired-end reads to be analysed in `fastq.gz` format
+- `reference` - name of reference genome `fasta`, `fai` & `dict` files
+- `intervals` - `interval_list` file to specify the regions to call variants in
+
+To select the data & parameters you must:
+- Click the green plus to add more lines to for two additional parameters
+- Specify the parameter names for `fastq`, `reference` & `intervals`
+- Import the testdata. This has already been added to the AWS S3 bucket `s3://lifebit-featured-datasets/hackathon/gatk-flowcraft` (although you can also upload files from your local machine via the web interface)
+- Once the testdata has been imported you must specify the values for each parameter:
+    - `fastq` use the blue plus button to `Choose` the imported folder & click `+Regex` & type `*{1,2}.fastq.gz`
+    - `reference` you can also use strings to specify the location. Set the reference to `s3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh37/Sequence/WholeGenomeFasta/human_g1k_v37_decoy`
+    - For the intervals click the blue plus again & select the `GRCh37WholeGenome.interval_list` file within the imported folder
+- Finally, click `Next`
+
+See below for all of the steps:
+
+![select_data_params](https://raw.githubusercontent.com/PhilPalmer/lbf-hack-tutorial/master/images/select_data_params.gif)
+
+## iii. Run the job - selecting the project & resources
+
+Select a project & instance:
+
+Before running the job you must:
+1. Select the project (which is like a folder used to group multiple analyses/jobs). You can select the already created `Demo` project
+2. Choose the instance to set the compute resources such as CPUs & memory. Here you can select `Dedicated Instances` > 16 CPUs > `c4.4xlarge`
+3. Finally, click `Run job`
+
+![run_job](https://raw.githubusercontent.com/PhilPalmer/lbf-hack-tutorial/master/images/run_job.gif)
+
+# d) Monitoring an analysis
+
+To monitor jobs you can click on the row for any given job. Immediately after running a job its status will be initialising. This is where AWS in launching the instance. This normally occurs for ~5mins before you are able to view the progress of the job. 
+
+Once on the job monitor page, you can see the progress of the job update in real time. Information such as the resources i.e. memory & CPUs is displayed. Once the job has finished the results can be found in the results tab as well as any reports for select pipelines.
+
+![monitor_job](https://raw.githubusercontent.com/PhilPalmer/lbf-hack-tutorial/master/images/monitor_job.gif)
+
+You can view a successfully completed example job [here](https://staging.lifebit.ai/public/jobs/5d0534f3ee251700be6884ba):
+
+[![shared_job](https://raw.githubusercontent.com/PhilPalmer/lbf-hack-tutorial/master/images/shared_job.png)](https://staging.lifebit.ai/public/jobs/5d0534f3ee251700be6884ba)
+
+### Thanks for taking part
+
+Well done you survived! You’ve made it to the end of the hackathon tutorial. You’ve learned about the magic of Nextflow, Docker, Flowcraft & Deploit. You can now go out & analyse all the things.
+
+![all_the_things](https://raw.githubusercontent.com/PhilPalmer/lbf-hack-tutorial/master/images/all_the_things.jpg)
+
+Hope you enjoyed the conference & let us know if you have any feedback or questions.

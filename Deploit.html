@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Session 4: Running Nextflow Pipelines on The Cloud on Deploit</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="Nextflow.html">Nextflow</a>
+</li>
+<li>
+  <a href="Docker.html">Docker</a>
+</li>
+<li>
+  <a href="Flowcraft.html">Flowcraft</a>
+</li>
+<li>
+  <a href="Deploit.html">Deploit</a>
+</li>
+<li>
+  <a href="Credits.html">Credits</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Session 4: Running Nextflow Pipelines on The Cloud on Deploit</h1>
+
+</div>
+
+
+<p><br></p>
+<p><img src="https://raw.githubusercontent.com/PhilPalmer/lbf-hack-tutorial/master/images/deploit.png" alt="drawing" width="400"/></p>
+<p><br></p>
+<p><strong>Main outcome:</strong> <em>During this session, you will learn how to scale the GATK pipeline you built in the previous session to run an analysis on the Cloud using the Deploit platform.</em></p>
+<p><a href="https://lifebit.ai/deploit">Deploit</a> is a bioinformatics platform, developed by Lifebit, where you can run your analysis over the Cloud/AWS.</p>
+<div id="a-creating-an-account" class="section level1">
+<h1>a) Creating an account</h1>
+<p>First, create an account/log in <a href="https://deploit.lifebit.ai/register">here</a>. You will get $10 free credits. If you prefer you can connect &amp; use your own AWS account/credentials.</p>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/PhilPalmer/lbf-hack-tutorial/master/images/create_deploit_account.png" alt="create_deploit_account" />
+<p class="caption">create_deploit_account</p>
+</div>
+</div>
+<div id="b-importing-a-nextflow-pipeline-on-deploit" class="section level1">
+<h1>b) Importing a Nextflow pipeline on Deploit</h1>
+<p>We are able to import the GATK pipeline we created with FlowCraft from the previous section (Session 3) on Deploit. This will enable us to scale our analyses. All we need to import a pipeline is the URL from GitHub. For simplicity, we have already created a GitHub repository for the pipeline here: <a href="https://github.com/lifebit-ai/gatk-flowcraft" class="uri">https://github.com/lifebit-ai/gatk-flowcraft</a></p>
+<p>To import the pipeline we must first navigate to the pipelines page. This can be found in the navigation bar on the left-hand-side:</p>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/PhilPalmer/lbf-hack-tutorial/master/images/deploit_pipelines.png" alt="deploit_pipelines" />
+<p class="caption">deploit_pipelines</p>
+</div>
+<p>To then import the pipeline you need to: - Click the green <code>New</code> button - <code>Select</code> the GitHub icon to import the Nextflow pipeline from GitHub - Paste the URL of our pipeline <a href="https://github.com/lifebit-ai/gatk-flowcraft"><code>https://github.com/lifebit-ai/gatk-flowcraft</code></a> - Name our pipeline, eg <code>gatk-flowcraft</code> - (Optional:) enter a pipeline description - Click <code>Next</code> &amp; <code>Create pipeline</code> :tada:</p>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/PhilPalmer/lbf-hack-tutorial/master/images/import_pipeline.gif" alt="import_pipeline.gif" />
+<p class="caption">import_pipeline.gif</p>
+</div>
+</div>
+<div id="c-running-the-pipeline" class="section level1">
+<h1>c) Running the pipeline</h1>
+<p>Pipelines can be run in three simple steps: 1. Select the pipeline 2. Select data &amp; parameters 3. Run the analysis</p>
+<div id="i.-selecting-the-pipeline" class="section level2">
+<h2>i. Selecting the pipeline</h2>
+<p>Once the pipeline is imported it will automatically be selected.</p>
+<p>Alternatively, you can navigate to the pipelines page. Where you can find the imported pipeline under <code>MY PIPELINES &amp; TOOLS</code>. To select the pipeline you need to click the card for the pipeline.</p>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/PhilPalmer/lbf-hack-tutorial/master/images/my_pipelines.png" alt="my_pipelines" />
+<p class="caption">my_pipelines</p>
+</div>
+</div>
+<div id="ii.-selecting-the-data-parameters" class="section level2">
+<h2>ii. Selecting the data &amp; parameters</h2>
+<p>The pipeline requires three parameters to be set. These are: - <code>fastq</code> - paired-end reads to be analysed in <code>fastq.gz</code> format - <code>reference</code> - name of reference genome <code>fasta</code>, <code>fai</code> &amp; <code>dict</code> files - <code>intervals</code> - <code>interval_list</code> file to specify the regions to call variants in</p>
+<p>To select the data &amp; parameters you must: - Click the green plus to add more lines to for two additional parameters - Specify the parameter names for <code>fastq</code>, <code>reference</code> &amp; <code>intervals</code> - Import the testdata. This has already been added to the AWS S3 bucket <code>s3://lifebit-featured-datasets/hackathon/gatk-flowcraft</code> (although you can also upload files from your local machine via the web interface) - Once the testdata has been imported you must specify the values for each parameter: - <code>fastq</code> use the blue plus button to <code>Choose</code> the imported folder &amp; click <code>+Regex</code> &amp; type <code>*{1,2}.fastq.gz</code> - <code>reference</code> you can also use strings to specify the location. Set the reference to <code>s3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh37/Sequence/WholeGenomeFasta/human_g1k_v37_decoy</code> - For the intervals click the blue plus again &amp; select the <code>GRCh37WholeGenome.interval_list</code> file within the imported folder - Finally, click <code>Next</code></p>
+<p>See below for all of the steps:</p>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/PhilPalmer/lbf-hack-tutorial/master/images/select_data_params.gif" alt="select_data_params" />
+<p class="caption">select_data_params</p>
+</div>
+</div>
+<div id="iii.-run-the-job---selecting-the-project-resources" class="section level2">
+<h2>iii. Run the job - selecting the project &amp; resources</h2>
+<p>Select a project &amp; instance:</p>
+<p>Before running the job you must: 1. Select the project (which is like a folder used to group multiple analyses/jobs). You can select the already created <code>Demo</code> project 2. Choose the instance to set the compute resources such as CPUs &amp; memory. Here you can select <code>Dedicated Instances</code> &gt; 16 CPUs &gt; <code>c4.4xlarge</code> 3. Finally, click <code>Run job</code></p>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/PhilPalmer/lbf-hack-tutorial/master/images/run_job.gif" alt="run_job" />
+<p class="caption">run_job</p>
+</div>
+</div>
+</div>
+<div id="d-monitoring-an-analysis" class="section level1">
+<h1>d) Monitoring an analysis</h1>
+<p>To monitor jobs you can click on the row for any given job. Immediately after running a job its status will be initialising. This is where AWS in launching the instance. This normally occurs for ~5mins before you are able to view the progress of the job.</p>
+<p>Once on the job monitor page, you can see the progress of the job update in real time. Information such as the resources i.e. memory &amp; CPUs is displayed. Once the job has finished the results can be found in the results tab as well as any reports for select pipelines.</p>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/PhilPalmer/lbf-hack-tutorial/master/images/monitor_job.gif" alt="monitor_job" />
+<p class="caption">monitor_job</p>
+</div>
+<p>You can view a successfully completed example job <a href="https://staging.lifebit.ai/public/jobs/5d0534f3ee251700be6884ba">here</a>:</p>
+<p><a href="https://staging.lifebit.ai/public/jobs/5d0534f3ee251700be6884ba"><img src="https://raw.githubusercontent.com/PhilPalmer/lbf-hack-tutorial/master/images/shared_job.png" alt="shared_job" /></a></p>
+<div id="thanks-for-taking-part" class="section level3">
+<h3>Thanks for taking part</h3>
+<p>Well done you survived! You’ve made it to the end of the hackathon tutorial. You’ve learned about the magic of Nextflow, Docker, Flowcraft &amp; Deploit. You can now go out &amp; analyse all the things.</p>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/PhilPalmer/lbf-hack-tutorial/master/images/all_the_things.jpg" alt="all_the_things" />
+<p class="caption">all_the_things</p>
+</div>
+<p>Hope you enjoyed the conference &amp; let us know if you have any feedback or questions.</p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

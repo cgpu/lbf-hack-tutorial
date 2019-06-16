@@ -1,0 +1,20 @@
+---
+title: "Credits"
+output: 
+  html_document:
+    toc: true
+    toc_float: true  
+    code_folding: show
+    code_download: false
+    theme: cerulean  
+    highlight: kate         
+---
+
+## Acknowledgements 
+Credits to [Lifebit](https://lifebit.ai/) & [The Francis Crick Institute](https://www.crick.ac.uk/) for organising & hosting the event.
+
+Many thanks to everyone who helped out along the way, including (but not limited to): 
+@ODiogoSilva, @cgpu, @clairealix, @cimendes & @pprieto
+
+## Notable mentions
+Thanks to everyone involved in the [nf-hack17-tutorial](https://github.com/nextflow-io/nf-hack17-tutorial) which was heavily used as inspiration for this tutorial.

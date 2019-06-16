@@ -1,0 +1,76 @@
+---
+title: "London Bioinformatics Frontiers Hackathon Tutorial"
+output: 
+  html_document:
+    toc: true
+    toc_float: true  
+    code_folding: hide
+    code_download: false
+    theme: cerulean  
+    highlight: kate         
+---
+<br>
+
+Tutorial for The [London Bioinformatics Frontiers](http://bioinformatics-frontiers.com) Hackathon 2019.
+
+![](https://raw.githubusercontent.com/PhilPalmer/lbf-hack-tutorial/master/images/lbf_banner.png)
+<br><br>
+
+In this tutorial you will learn:
+- [Nextflow](https://www.nextflow.io/) - how to build parallelisable & scalable computational pipelines
+- [Docker](https://www.docker.com/) - how to build & run containers to bundle dependencies
+- [FlowCraft](https://flowcraft.readthedocs.io/en/latest/) - how to build & use modular, extensible and flexible components for Nextflow pipelines
+- [Deploit](https://lifebit.ai/deploit) - how to scale your analyses over the cloud
+
+<br>
+
+# Prerequisites
+The following are required for the hackathon:
+ 
+  - Java 8 or later
+  - Docker engine 1.10.x (or higher)
+  - Git
+  - Python3
+
+<br>
+_NOTE: If you have them installed that's great! Don't worry if not we will help you to install them & other software throughout the tutorial_
+
+# Contents
+
+## Session 1: [Nextflow](Nextflow.html)
+  - a) Installation
+  - b) Parameters
+  - c) Processes 
+  - d) Channels
+  - e) Operators
+  - f) Configuration
+  
+## Session 2: [Docker](Docker.html)
+
+  - a) Running images
+  - b) Dockerfiles
+  - c) Building images
+  - d) __BONUS__: Upload the container to Docker Hub
+  
+## Session 3: [FlowCraft](Flowcraft.html)
+
+  - a) Installation
+  - b) How to build a FlowCraft Component
+  - c) Building a pipeline with FlowCraft
+  
+## Session 4: [Running Nextflow Pipelines on The Cloud on Deploit](Deploit.html)
+  
+  - a) Creating an account
+  - b) Importing a Nextflow pipeline on Deploit
+  - c) Running the pipeline
+  - d) Monitoring an analysis
+  
+# Now, shall we begin?
+
+<br>
+
+![](https://media1.tenor.com/images/7f2342d393d9d9be61f1ec601a5134dc/tenor.gif?itemid=9258256)
+
+<br>
+
+Let's get started!  [Session 1 - Nextflow](Nextflow.html)

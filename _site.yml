@@ -1,0 +1,21 @@
+name: "London Bioinformatics Frontiers Hackathon Tutorial"
+navbar:
+  title: "Home"
+  left:
+    - text: "Nextflow"
+      href: Nextflow.html
+    - text: "Docker"
+      href: Docker.html
+    - text: "Flowcraft"
+      href: Flowcraft.html
+    - text: "Deploit"
+      href: Deploit.html
+    - text: "Credits"
+      href: Credits.html
+output_dir: "."
+output:
+  html_document:
+    theme: cerulean
+    highlight: kate
+    include:
+      after_body: _footer.html
