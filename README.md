@@ -11,7 +11,7 @@ In this tutorial you will learn:
 
 ## Agenda
 
-The following is a rough agenda for the day. The coffee & lunch breaks will definetely be at the times stated here. However, we may find that it takes us more or less time to get through the content than the times stated here:
+The following is a very rough agenda for the day. The coffee & lunch breaks will definitely be at the times stated here. However, we may find that different parts of the tutorial takes us more or less time to get through the content than the times stated here:
 
 ![agenda](https://raw.githubusercontent.com/lifebit-ai/lbf-hack-tutorial/master/images/agenda.png)
 
