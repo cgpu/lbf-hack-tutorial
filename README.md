@@ -18,6 +18,30 @@ The following are required for the hackathon:
 
 *If you have them installed that's great! Don't worry if not we will help you to install them & other software throughout the tutorial*
 
+## Contents
+
+- [Session 1: Nextflow](#session-1-nextflow)
+    - [a) Installation](#a-installation)
+    - [b) Parameters](#b-parameters)
+    - [c) Processes (inputs, outputs & scripts)](#c-processes-inputs-outputs--scripts)
+    - [d) Channels](#d-channels)
+    - [e) Operators](#e-operators)
+    - [f) Configuration](f-configuration)
+- [Session 2: Docker](#session-2-docker)
+    - [a) Running images](#a-running-images)
+    - [b) Dockerfiles](#b-dockerfiles)
+    - [c) Building images](#c-building-images)
+    - [d) BONUS: Upload the container to Docker Hub](#d-bonus-upload-the-container-to-docker-hub)
+- [Session 3: FlowCraft](#session-3-flowcraft)
+    - [a) Installation](#a-installation)
+    - [b) How to build a FlowCraft Component](#b-how-to-build-a-flowcraft-component)
+    - [c) Building a pipeline with FlowCraft](#c-building-a-pipeline-with-flowcraft)
+- [Session 4: Running Nextflow Pipelines on The Cloud on Deploit](#session-4-running-nextflow-pipelines-on-the-cloud-on-deploit)
+    - [a) Creating an account](#a-creating-an-account)
+    - [b) Importing a Nextflow pipeline on Deploit](#b-importing-a-nextflow-pipeline-on-deploit)
+    - [c) Running the pipeline](#c-running-the-pipeline)
+    - [d) Monitoring an analysis](#d-monitoring-an-analysis)
+
 <br />
 
 ## Session 1: Nextflow
