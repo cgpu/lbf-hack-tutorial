@@ -65,6 +65,11 @@ You will need to have Java 8 or later installed for Nextflow to work. You can ch
 java -version
 ```
 
+If you have [Conda](https://docs.conda.io/en/latest/) installed then you can run the following to install Nextflow:
+```bash
+conda install -c bioconda nextflow
+```
+
 To install Nextflow open a terminal & enter the following command:
 ```bash
 curl -fsSL get.nextflow.io | bash
