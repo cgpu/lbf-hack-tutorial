@@ -9,6 +9,12 @@ In this tutorial you will learn:
 - [FlowCraft](https://flowcraft.readthedocs.io/en/latest/) - how to build & use modular, extensible and flexible components for Nextflow pipelines
 - [Deploit](https://lifebit.ai/deploit) - how to scale your analyses over the cloud
 
+## Agenda
+
+The following is a rough agenda for the day. The coffee & lunch breaks will definetely be at the times stated here. However, we may find that it takes us more or less time to get through the content than the times stated here:
+
+![agenda](https://raw.githubusercontent.com/lifebit-ai/lbf-hack-tutorial/master/images/agenda.png)
+
 ## Prerequisites
 The following are required for the hackathon:
 - Java 8 or later
