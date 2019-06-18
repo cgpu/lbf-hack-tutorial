@@ -657,9 +657,9 @@ Well done you survived! You’ve made it to the end of the hackathon tutorial. Y
 
 ![all_the_things](https://raw.githubusercontent.com/PhilPalmer/lbf-hack-tutorial/master/images/all_the_things.jpg)
 
-Hope you enjoyed the conference & let us know if you have any [feedback](https://forms.gle/5E8rCtWdLfZsJhGE6) or questions.
+Hope you enjoyed the conference & let us know if you have any [feedback](https://forms.gle/u78r5byJeZENbKdF8) or questions.
 
-Is there anything we could have improved on? It would be much appreciated if you could fill out this [feedback form](https://forms.gle/5E8rCtWdLfZsJhGE6). For any questions, email me phil@lifebit.ai
+Is there anything we could have improved on? It would be much appreciated if you could fill out this [feedback form](https://forms.gle/u78r5byJeZENbKdF8). For any questions, email me phil@lifebit.ai
 
 ## Credits
 
