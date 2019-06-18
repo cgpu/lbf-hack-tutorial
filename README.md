@@ -212,7 +212,7 @@ process fastqc {
 }
 ```
 
-The `reads` variable is now equal to a channel which contains the reads prefix & paired-end FASTQ data. Therefore, the input declaration has also changed to reflect this by declaring the value `name`. This `name` can be used as a tag for when the pipeline is run. Also as we are now declaring two inputs the `set` keyword also has to be used. Finally, we can also specify the container name within the processes as a directive.
+The `reads` variable is now equal to a channel which contains the reads prefix & paired-end FASTQ data. Therefore, the input declaration has also changed to reflect this by declaring the value `name`. This `name` can be used as a tag for when the pipeline is run. Also, as we are now declaring two inputs the `set` keyword has to be used. Finally, we can specify the container name within the processes as a directive.
 
 To run the pipeline:
 ```bash
@@ -220,7 +220,7 @@ nextflow run main.nf --reads "testdata/test.20k_reads_{1,2}.fastq.gz" -with-dock
 ```
 
 #### Recap
-Here we learnt how to the [`fromFilePairs`](https://www.nextflow.io/docs/latest/channel.html#fromfilepairs) method to generate a channel for our input data.
+Here we learnt how use to the [`fromFilePairs`](https://www.nextflow.io/docs/latest/channel.html#fromfilepairs) method to generate a channel for our input data.
 
 ### e) Operators
 
@@ -283,6 +283,11 @@ process {
 ```
 
 Here we have enabled docker by default, initialised parameters, set resources & containers. It is best practice to keep these in the `config` file so that they can more easily be set or removed. Containers & `params.reads` can then be removed from `main.nf`.
+
+The pipeline can now be run with the following:
+```bash
+nextflow run main.nf --reads "testdata/test.20k_reads_{1,2}.fastq.gz"
+```
 
 #### Recap
 Here we learnt how to use configuration files to set parameters, resources & containers
