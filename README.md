@@ -55,6 +55,20 @@ git clone https://github.com/lifebit-ai/lbf-hack-tutorial.git
 && cd lbf-hack-tutorial
 ```
 
+For the tutorial we will be working through a series of steps. If you are behind you can view the branches we have made for that section. The final branch is 2b. 
+
+![branches](https://raw.githubusercontent.com/lifebit-ai/lbf-hack-tutorial/master/images/branches.png)
+
+To swtich to the branch on the command line you can enter:
+```bash
+git checkout <branch_name>
+```
+
+eg:
+```bash
+git checkout 1b
+```
+
 <br />
 
 ## Session 1: Nextflow
