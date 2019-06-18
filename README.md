@@ -11,7 +11,7 @@ In this tutorial you will learn:
 
 ## Agenda
 
-The following is a very rough agenda for the day. The coffee & lunch breaks will definitely be at the times stated here. However, we may find that different parts of the tutorial takes us more or less time to get through the content than the times stated here:
+The following is a very rough agenda for the day. The coffee & lunch breaks will definitely be at the times stated here. However, we may find that different parts of the tutorial take us more or less time to get through the content than the times stated here:
 
 ![agenda](https://raw.githubusercontent.com/lifebit-ai/lbf-hack-tutorial/master/images/agenda.png)
 
@@ -47,6 +47,13 @@ The following are required for the hackathon:
     - [b) Importing a Nextflow pipeline on Deploit](#b-importing-a-nextflow-pipeline-on-deploit)
     - [c) Running the pipeline](#c-running-the-pipeline)
     - [d) Monitoring an analysis](#d-monitoring-an-analysis)
+
+## Setup
+So that you have the `testdata` within the repository it is recommended that you clone this reposiotry. To do this open a terminal & enter the following:
+```
+git clone https://github.com/lifebit-ai/lbf-hack-tutorial.git
+&& cd lbf-hack-tutorial
+```
 
 <br />
 
